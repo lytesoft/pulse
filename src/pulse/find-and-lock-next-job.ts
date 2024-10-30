@@ -1,7 +1,7 @@
 import createDebugger from 'debug';
 import { ReturnDocument } from 'mongodb';
 import { Pulse } from '.';
-import { Job } from '../job';
+import { Job, type JobAttributes, type JobAttributesData } from '../job';
 import { createJob } from '../utils';
 
 const debug = createDebugger('pulse:internal:_findAndLockNextJob');
@@ -68,7 +68,7 @@ export const findAndLockNextJob = async function (
   if (result?.value) {
     debug('found a job available to lock, creating a new job on Pulse with id [%s]', result.value._id);
 
-    job = createJob(this, result.value);
+    job = createJob(this, result.value as JobAttributes<JobAttributesData>);
   }
   return job;
 };
